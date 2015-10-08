@@ -1,0 +1,58 @@
+# WrightEagle (Soccer Simulation League 2D)                                        
+# BASE SOURCE CODE RELEASE 2013                                                    
+# Copyright (C) 1998-2013 WrightEagle 2D Soccer Simulation Team,                   
+#                          Multi-Agent Systems Lab.,                               
+#                          School of Computer Science and Technology,               
+#                          University of Science and Technology of China, China.    
+#                                                                                   
+# This program is free software; you can redistribute it and/or                    
+# modify it under the terms of the GNU General Public License                      
+# as published by the Free Software Foundation; either version 2                   
+# of the License, or (at your option) any later version.                           
+#                                                                                  
+# This program is distributed in the hope that it will be useful,                  
+# but WITHOUT ANY WARRANTY; without even the implied warranty of                   
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                    
+# GNU General Public License for more details.                                     
+#                                                                                  
+# You should have received a copy of the GNU General Public License                
+# along with this program; if not, write to the Free Software                      
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+[InitialTime]
+#预热时间，从下面的场景之前连续模拟几个周期，达到预热效果
+25
+
+[Scene]
+#前面是周期数，后面是rcg的位置
+#如果没有rcg的话，可以直接在的各种Data中写
+115 train/demo.rcg
+
+[NeedOpponent]
+#这里写上需要等他上的对手的号码，如果不需要等，置为0即可。
+#注意，如果一直等不到或者中途死了的话，训练无法终止
+1 2 3 4 5 6 7 8 9 10 11
+
+[EndCondition]
+#以下为示例代码，实际使用时支持括号以及&和|
+#过x个周期自然停止
+#Time=off
+#球的x坐标大于某值停止
+#BallX>=off
+#球的x坐标小于某值停止
+#BallX<=off
+#球的y坐标。。
+#BallY>=off
+#球的y坐标。。
+#BallY<=off
+#关键球员,如果为0的话，指的是任意对方球员
+#KeyPlayer=0
+#球到关键球员的距离大于某值
+#Ball2Player>=off
+#球到关键球员的距离小于某值
+#Ball2Player<=off
+#非PlayOn时终止
+#NonPlayOn
+#(BallX>=52.5 && BallY<=7 && BallY>=-7) || Time = 50
+Time = 50
+#整场训练结束后（6000周期），会生成一个TrainReport。内容包括训练次数，终止条件达成情况（达成次数，达成所需最长时间，所需最短时间，这两种情况发生的时间）

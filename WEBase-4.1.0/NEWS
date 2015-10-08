@@ -1,0 +1,30 @@
+[4.0.1]
+    * Add HowTo.
+
+[4.0.0]
+    * Add Trainer.
+
+[3.0.0]
+    * Merge from mjiang's EastEagle team
+
+[2.1.0]
+    * GPL is replaced by BSD License.
+
+[2.0.2]
+    * Add penalty decision framework.
+    
+[2.0.1]
+    * Multiple setplay bug fixed.
+    * Some behavior code refined.
+
+[2.0.0]
+    * New WrightEagle base code based on WE2010.
+
+[1.1.0]
+    * Changed for server version 14.0.2.1.
+
+[1.0.1]
+    * Changed for server version 13.2.2.1.
+
+[1.0.0]
+    * Initial released WrightEagle base code, for server version 13.2.2.

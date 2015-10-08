@@ -1,0 +1,77 @@
+***********************************************************
+********* How to work with eclipse ************************
+***********************************************************
+To use eclipse, you should already have JRE or JDK in your environment.
+1. Open eclipse, and set default workspace to /home/YOUR_USER_NAME/workspace.
+2. Extract WrightEagleBASE-*.tar.gz, you will get WEBase/. Copy entire WEBase/ to /home/YOUR_USER_NAME/workspace.
+3. File -> New -> C++ Project, set "Project name" the same as WEBase(the existed directory in /home/YOUR_USER_NAME/workspace), and set Toolchains to "Linux GCC". 
+4. Right click on project WEBase, Properities -> C/C++ Build -> Settings, and set Configuration to "[All configurations]".
+5. GCC C++ Linker -> Libraries, add pthread to Libraries, and click "Apply" button to make changes take effect.
+
+
+***********************************************************
+********* How to change TEAMNAME **************************
+***********************************************************
+You can just set TEAM_NAME="TEAMNAME" in start.sh.
+
+
+***********************************************************
+********* How to change BINARYNAME ************************
+***********************************************************
+You can replace all "WEBase" with "BINARYNAME" in Debug/makefile or Release/makefile.
+
+
+***********************************************************
+********* How to use dynamic-debug ************************
+***********************************************************
+To use dynamic-debug, you should save some log files:
+1. Set "dynamic_debug_mode = off and save_server_message = on" in conf/player.conf.
+2. Start the game as normal.
+3. When a game ends, use Ctrl + C to close rcssserver.
+4. Now you will find logs in Logfiles/ named as BINARINAME-NUM-msg-log.
+5. Use "genlog PLAYERNUM" and "showlog PLAYERNUM" to see certain player's sight log. For example:
+   ./genlog 6       
+   ./showlog 6
+    
+If you want to debug No.6 player in cycle 16, you can use eclipse like this:
+1. Right click on project WEBase, Debug As -> Debug Configuration. Double click on C/C++ Application, you'll get WEBase Debug(Here WEBase is the name of your binary). Set Name to BINARYNAME and C/C++ Application to Debug/BINARYNAME, and add "-dynamic_debug_mode on -save_server_message off" to Arguments -> Program arguments. Don't forget to click "Apply" button to make changes take effect.
+(or set dynamic_debug_mode = on and save_server_message = off in conf/player.conf)
+2. Fill "load Logfiles/WEBase-6-msg.log" in dynamicdebug.txt.
+3. Press debug button in eclipse, then program would pause at "RegisterSignalHandler();" within function main().
+4. Press F8 on the keyboard("Resume" button in eclipse), and input "rt 16" in the terminal within eclipse.
+5. Add breakpoint at where you want, for example, line 150 in BehaviorDribble.cpp.
+6. Input "r" in the terminal within eclipse.
+7. If your program didn't pause at your breakpoint in cycle 16, it means this section of code doesn't help in cycle 16 for No.6 player. Otherwise, you could use F5(Step Into), F6(Step Over), F7(Step Retrun) and so on to debug your program.
+8. After you fix bugs in program(It means the code have changed), you could use:
+   ./genlog 6
+   ./showlog 6
+get new sight logs to see the changes. 
+
+
+***********************************************************
+********* How to use trainer ******************************
+***********************************************************
+Trainer could make you view same scene repeatedly. It is very simple to use.
+1. Modify InitialTime, Scene, EndCondition in train/train.conf, and make sure that the num represents the cycle you want to repeat and the location of log file is right. For example:
+  [InitialTime]
+    25
+  [Scene]
+    115 train/demo.rcg
+  [EndCondition]
+    Time = 50
+It would repeat the scene from cycle 95(= 115 - 25) to 165( = 115 + 50), and log file named demo.rcg is in the directory train/.
+2. Set OPP_DIR="/……"(the location of opponent's BINARY, here opponent is opposite team in demo.rcg)
+3. Use train.sh to start training. For example:
+    ./start.sh
+
+
+***********************************************************
+********* How to get start with WEBase ********************
+***********************************************************
+The code in Behavior*::Plan() is example of player's planning in WEBase. You can replace it with your own planning. 
+
+
+
+Wish you good luck!
+
+
