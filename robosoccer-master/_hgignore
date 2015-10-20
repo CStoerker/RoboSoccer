@@ -1,0 +1,12 @@
+syntax: glob
+.directory
+*.pyc
+*.swp
+*.rcl
+*.rcg
+
+syntax: regexp
+^local/
+^site/
+^log/
+
