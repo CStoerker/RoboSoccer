@@ -49,12 +49,24 @@ class OffensiveAgent (Agent):
 
     # Determine if the ball should be passed, if so pass and return true else return false
     def pass_ball(self):
+    	if self.wm.is_ball_kickable():
+                self.wm.kick_to(self.wm.get_nearest_teammate_to_point(self,self.goal_pos), 0.7)
+                return True
+        else:
+            # move towards ball
+            if -7 <= self.wm.ball.direction <= 7:
+                self.wm.ah.dash(65)
+                return False
+            else:
+                # face ball
+                self.wm.ah.turn(self.wm.ball.direction / 2)
+                return False
         return False
 
     # Determine if the ball should be carried up the field, if so dribble else return false
     def dribble(self):
         if self.wm.is_ball_kickable():
-                self.wm.kick_to(self.goal_pos, 0.3)
+                self.wm.kick_to(self.goal_pos, 0.1)
                 return True
         else:
             # move towards ball
@@ -73,5 +85,9 @@ class OffensiveAgent (Agent):
 
     # Determine if player should move to open space
     def open_space(self):
-        return False
+	if self.euclidean_distance(self.wm.get_nearest_teammate_to_point(self, abs_coords),abs_coords)) < 5:
+		
+		return True
+	else:
+        	return False
 
