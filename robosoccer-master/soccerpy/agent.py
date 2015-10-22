@@ -249,7 +249,7 @@ class Agent:
             elif self.wm.uniform_number == 5:
                 self.wm.teleport_to_point((-35 * side_mod, -20))
             elif self.wm.uniform_number == 6:
-                self.wm.teleport_to_point((-20 * side_mod, 27))
+                self.wm.teleport_to_point((-20 * side_mod, -27))
             elif self.wm.uniform_number == 7:
                 self.wm.teleport_to_point((-20 * side_mod, 10))
             elif self.wm.uniform_number == 8:
