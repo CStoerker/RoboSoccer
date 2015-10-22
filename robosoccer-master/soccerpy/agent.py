@@ -249,7 +249,7 @@ class Agent:
             elif self.wm.uniform_number == 5:
                 self.wm.teleport_to_point((-35 * side_mod, -20))
             elif self.wm.uniform_number == 6:
-                self.wm.teleport_to_point((-20 * side_mod, 27))
+                self.wm.teleport_to_point((-20 * side_mod, -27))
             elif self.wm.uniform_number == 7:
                 self.wm.teleport_to_point((-20 * side_mod, 10))
             elif self.wm.uniform_number == 8:
@@ -275,8 +275,8 @@ class Agent:
         # kick off!
         if self.wm.is_before_kick_off():
             # player 9 takes the kick off
-            if self.wm.uniform_number == 9:
-                if self.wm.is_ball_kickable():
+            if self.wm.uniform_number == 10:
+                if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, goal_pos) <= 25:
                     # kick with 100% extra effort at enemy goal
                     self.wm.kick_to(goal_pos, 1.0)
                 else:
@@ -302,8 +302,8 @@ class Agent:
 
                 return
 
-            # kick it at the enemy goal
-            if self.wm.is_ball_kickable():
+            # kick it at the enemy goal if agent is within range of goal
+            if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, goal_pos) <= 25:
                 self.wm.kick_to(goal_pos, 1.0)
                 return
             else:
