@@ -18,34 +18,6 @@ NO ASSIGNMENT...
 #### Overview
 The goal this week will be to create three new types of players, each with its own specialized function within the RoboCup Match.
 
-#### Ian's Task:  
-Create OffensiveAgent Class. The agent should be capabe of kicking the ball towards the goal.
-[Issue #2](https://github.com/renandincer/robosoccer/issues/2)  
-
-#### John's Task:  
-Extend GoalieAgent Class. Make the class capable of catching the ball.
-[Issue #1](https://github.com/renandincer/robosoccer/issues/1)  
-
-#### Renan's Task:  
-Create DefensiveAgent. The agent should be capable of getting
-[Issue #3](https://github.com/renandincer/robosoccer/issues/3)  
-
-### Week 6:
-Have three different roles for agents and present each of their functions in relation to the game.
-
-### Week 7:
-Play against a more advanced team.
-
-### Week 8:
-
-### Week 9:
-
-### Week 10:
-
-### Week 11:
-
-### Week 12:
-
 ### Week 13:
 Presentations/tournament.
 
