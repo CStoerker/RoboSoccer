@@ -12,19 +12,27 @@ from soccerpy import sp_exceptions
 from soccerpy import handler
 from soccerpy.agent import Agent
 from soccerpy.world_model import WorldModel
+from soccerpy.offensive_agent import OffensiveAgent
 
 # Team Name Constant
 TEAM_NAME = 'Mannynator'
 
-# Number of Soccer Agents
-PLAYER_COUNT = 11
+# Variables
+# number of forward agents
+num_forwards = 3
 
-def spawn_agent(team_name):
+# Number of midfield Agents
+num_midfields = 4
+
+# Number of defenders Agents
+num_defenders = 4
+
+def spawn_agent(team_name, agent_position):
     """
     Used to run an agent in a seperate physical process.
     """
 
-    a = Agent()
+    a = agent_position()
     a.connect("localhost", 6000, team_name)
     a.play()
 
@@ -36,10 +44,35 @@ def spawn_agent(team_name):
 if __name__ == "__main__":
     
     agentthreads = []
-    for agent in xrange(min(11, PLAYER_COUNT)):
-        print "  Spawning agent %d..." % agent
 
-        at = mp.Process(target=spawn_agent, args=(TEAM_NAME,))
+	#create goalie
+	#create goalie
+
+	#Create the forward positon players
+    for agent in range(0, num_forwards):
+        print "  Spawning num_forward agent %d..." % (agent + 1)
+
+        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, OffensiveAgent))
+        at.daemon = True
+        at.start()
+
+        agentthreads.append(at)
+
+	#Create the defensive positon players
+    for agent in range(0, num_defenders):
+        print "  Spawning num_forward agent %d..." % (agent +1)
+
+        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, OffensiveAgent))
+        at.daemon = True
+        at.start()
+
+        agentthreads.append(at)
+
+	#Create the defensive positon players
+    for agent in range(0, num_midfields):
+        print "  Spawning num_forward agent %d..." % (agent +1)
+
+        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, OffensiveAgent))
         at.daemon = True
         at.start()
 

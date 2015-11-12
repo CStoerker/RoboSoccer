@@ -94,6 +94,44 @@ class Agent:
         # something goes wrong beforehand.
         self.__connected = True
 
+    def starting_field_position(self):
+
+	self.wm.teleport_to_point(self.set_starting_postion())
+
+    def set_starting_postion(self):
+
+	 # used to flip x coords for other side
+            side_mod = 1
+
+            if self.wm.side == WorldModel.SIDE_R:
+                side_mod = -1
+
+	    if self.wm.uniform_number == 1:
+                return(-50 * side_mod, 0)
+            elif self.wm.uniform_number == 2:
+                return(-35 * side_mod, 20)
+            elif self.wm.uniform_number == 3:
+                return(-35 * side_mod, 5)
+            elif self.wm.uniform_number == 4:
+                return(-35 * side_mod, -5)
+            elif self.wm.uniform_number == 5:
+                return(-35 * side_mod, -20)
+            elif self.wm.uniform_number == 6:
+                return(-20 * side_mod, -27)
+            elif self.wm.uniform_number == 7:
+                return(-20 * side_mod, 10)
+            elif self.wm.uniform_number == 8:
+                return(-20 * side_mod, -10)
+            elif self.wm.uniform_number == 9:
+                return(-20 * side_mod, 27)
+            elif self.wm.uniform_number == 10:
+                return(-10 * side_mod, 5)
+            elif self.wm.uniform_number == 11:
+                return(-10 * side_mod, -5)
+
+		#if an error
+	    return(0,0)
+
     def play(self):
         """
         Kicks off the thread that does the agent's thinking, allowing it to play
@@ -218,6 +256,13 @@ class Agent:
         think method.
         """
 
+ 	# determine the enemy goal position
+        goal_pos = None
+        if self.wm.side == WorldModel.SIDE_R:
+            goal_pos = (-55, 0)
+        else:
+            goal_pos = (55, 0)
+
         self.in_kick_off_formation = False
 
     def think(self):
@@ -231,52 +276,19 @@ class Agent:
             raise Exception("A thread died.")
 
         # take places on the field by uniform number
-        if not self.in_kick_off_formation:
+        if self.wm.is_before_kick_off():
 
-            # used to flip x coords for other side
-            side_mod = 1
-            if self.wm.side == WorldModel.SIDE_R:
-                side_mod = -1
-
-            if self.wm.uniform_number == 1:
-                self.wm.teleport_to_point((-50 * side_mod, 0))
-            elif self.wm.uniform_number == 2:
-                self.wm.teleport_to_point((-35 * side_mod, 20))
-            elif self.wm.uniform_number == 3:
-                self.wm.teleport_to_point((-35 * side_mod, 5))
-            elif self.wm.uniform_number == 4:
-                self.wm.teleport_to_point((-35 * side_mod, -5))
-            elif self.wm.uniform_number == 5:
-                self.wm.teleport_to_point((-35 * side_mod, -20))
-            elif self.wm.uniform_number == 6:
-                self.wm.teleport_to_point((-20 * side_mod, -27))
-            elif self.wm.uniform_number == 7:
-                self.wm.teleport_to_point((-20 * side_mod, 10))
-            elif self.wm.uniform_number == 8:
-                self.wm.teleport_to_point((-20 * side_mod, -10))
-            elif self.wm.uniform_number == 9:
-                self.wm.teleport_to_point((-20 * side_mod, 27))
-            elif self.wm.uniform_number == 10:
-                self.wm.teleport_to_point((-10 * side_mod, 5))
-            elif self.wm.uniform_number == 11:
-                self.wm.teleport_to_point((-10 * side_mod, -5))
+	    self.starting_field_position()
 
             self.in_kick_off_formation = True
 
             return
 
-        # determine the enemy goal position
-        goal_pos = None
-        if self.wm.side == WorldModel.SIDE_R:
-            goal_pos = (-55, 0)
-        else:
-            goal_pos = (55, 0)
-
-        # kick off!
+        # Referee started Kick Off
         if self.wm.is_before_kick_off():
             # player 9 takes the kick off
             if self.wm.uniform_number == 10:
-                if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, goal_pos) <= 25:
+                if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, 				goal_pos) <= 25:
                     # kick with 100% extra effort at enemy goal
                     self.wm.kick_to(goal_pos, 1.0)
                 else:
@@ -303,7 +315,7 @@ class Agent:
                 return
 
             # kick it at the enemy goal if agent is within range of goal
-            if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, goal_pos) <= 25:
+            if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, 				goal_pos) <= 25:
                 self.wm.kick_to(goal_pos, 1.0)
                 return
             else:
