@@ -286,7 +286,7 @@ class Agent:
 
         # Referee started Kick Off
         if self.wm.is_before_kick_off():
-            # player 9 takes the kick off
+            # player 10 takes the kick off
             if self.wm.uniform_number == 10:
                 if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, 				goal_pos) <= 25:
                     # kick with 100% extra effort at enemy goal
