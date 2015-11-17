@@ -102,9 +102,15 @@ class OffensiveAgent (Agent):
 	def shoot(self):
 	
 		# figure out how far the goal is and if there is someone in front of the 			player. If not, shoot
+		# kick it at the enemy goal if agent is within range of goal
+		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 15:
 
-		return False
-	 #end of method
+			self.wm.kick_to(self.goal_pos, 1.0)
+			return True
+
+		else:	
+			return False
+		#end of method
 
 	"""@pass
 		Determine if the ball should be passed, if so pass and return true else return 			false
@@ -123,12 +129,13 @@ class OffensiveAgent (Agent):
 		
 		#determine if the agent has the ball
 		if self.wm.is_ball_kickable():
-			#kick towards the opponets goalpost
-			self.wm.kick_to(self.goal_pos, 0.3)
+			#Dribble towards the opponets goalpost
+			self.wm.kick_to(self.goal_pos, 0.1)
 			return True
 		else:
 		    # move towards ball
 		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60:
+
 			self.wm.ah.dash(65)
 			return True
 		    else:

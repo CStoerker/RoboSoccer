@@ -308,6 +308,8 @@ class Agent:
 		if not self.__think_thread.is_alive() or not self.__msg_thread.is_alive():
 		    raise Exception("A thread died.")
 
+		#self.setup_environment()
+
 		# take places on the field by uniform number
 		if self.wm.is_before_kick_off():
 
