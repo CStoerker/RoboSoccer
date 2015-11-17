@@ -23,12 +23,16 @@ from soccerpy.agent import Agent
 from soccerpy.world_model import WorldModel
 from soccerpy.offensive_agent import OffensiveAgent
 from soccerpy.midfield_agent import MidfieldAgent
+from soccerpy.defensive_agent import DefensiveAgent
 from soccerpy.goalie_agent import GoalieAgent
 
 # Team Name Constant
 TEAM_NAME = 'Mannynator'
 
 # Variables
+# number goalie
+num_goalie = 1
+
 # number of forward agents
 num_forwards = 2
 
@@ -61,19 +65,20 @@ if __name__ == "__main__":
 	#create array for agents    
     agentthreads = []
 
-    #create goalie
-    print "  Spawning GoalieAgent 1..."
+	#create goalie
+    for agent in range(0, num_goalie):
+        print "  Spawning GoalieAgent 1 %d..." % (agent +1)
 
-    at = mp.Process(target=spawn_agent, args=(TEAM_NAME, GoalieAgent))
-    at.daemon = True
-    at.start()
-    agentthreads.append(at)
+	at = mp.Process(target=spawn_agent, args=(TEAM_NAME, GoalieAgent))
+	at.daemon = True
+	at.start()
+	agentthreads.append(at)
 
 	#Create the defensive positon players
     for agent in range(0, num_defenders):
         print "  Spawning num_forward agent %d..." % (agent +1)
 
-        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, OffensiveAgent))
+        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, DefensiveAgent))
         at.daemon = True
         at.start()
 
@@ -83,7 +88,7 @@ if __name__ == "__main__":
     for agent in range(0, num_midfields):
         print "  Spawning num_forward agent %d..." % (agent +1)
 
-        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, OffensiveAgent))
+        at = mp.Process(target=spawn_agent, args=(TEAM_NAME, MidfieldAgent))
         at.daemon = True
         at.start()
 
