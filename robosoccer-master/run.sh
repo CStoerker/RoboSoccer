@@ -27,7 +27,7 @@ pidlist+=($!)
 # spawn an opponent
 case $1 in
     # run simulator with full team of 'dumb' opponents
-    simple)
+    dummy)
     python ../opponent.py &
     # add opponent client to pidlist
     pidlist+=($!)

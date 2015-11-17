@@ -321,7 +321,7 @@ class Agent:
 		if self.wm.is_before_kick_off():
 		    # player 10 takes the kick off
 		    if self.wm.uniform_number == 10:
-			if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, 				goal_pos) <= 25:
+			if self.wm.is_ball_kickable():
 			    # kick with 100% extra effort at enemy goal
 			    self.wm.kick_to(goal_pos, 1.0)
 			else:
@@ -348,7 +348,7 @@ class Agent:
 			return
 
 		    # kick it at the enemy goal if agent is within range of goal
-		    if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords, 				goal_pos) <= 25:
+		    if self.wm.is_ball_kickable():
 			self.wm.kick_to(goal_pos, 1.0)
 			return
 		    else:

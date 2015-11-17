@@ -14,7 +14,7 @@ from soccerpy.agent import Agent
 from soccerpy.world_model import WorldModel
 
 # Team Name Constant
-TEAM_NAME = 'Zimbabwe'
+TEAM_NAME = 'DummyTeam'
 
 # Number of Soccer Agents
 PLAYER_COUNT = 11
