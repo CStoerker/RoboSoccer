@@ -20,6 +20,9 @@ from world_model import WorldModel
 
 class Agent:
 
+	#variables
+	goal_pos = None
+
 #Start of methods
 #############################################################################################
 
@@ -289,7 +292,7 @@ class Agent:
 	def setup_environment(self):
 
 		# determine the enemy goal position
-		goal_pos = None
+		#goal_pos = None
 		if self.wm.side == WorldModel.SIDE_R:
 		    goal_pos = (-55, 0)
 		else:
@@ -308,11 +311,10 @@ class Agent:
 		if not self.__think_thread.is_alive() or not self.__msg_thread.is_alive():
 		    raise Exception("A thread died.")
 
-		#self.setup_environment()
-
 		# take places on the field by uniform number
 		if self.wm.is_before_kick_off():
 
+			#set the players on the field
 		    self.starting_field_position()
 
 		    self.in_kick_off_formation = True

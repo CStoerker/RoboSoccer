@@ -16,6 +16,7 @@ class OffensiveAgent (Agent):
 
 	#variables
 	goal_pos = (55, 0)
+	#enemy_pos = (-55,0)
 
 #Start of methods
 #############################################################################################
@@ -78,8 +79,10 @@ class OffensiveAgent (Agent):
 		#check which side we are playing in
 		if self.wm.side == self.wm.SIDE_R:
 		    self.goal_pos = (-55, 0)
+		    #self.enemy_pos = (55,0)
 		else:
 		    self.goal_pos = (55, 0)
+		    #self.enemy_pos = (-55,0)
 		return
 		 #end of method
 
@@ -105,7 +108,7 @@ class OffensiveAgent (Agent):
 		# kick it at the enemy goal if agent is within range of goal
 		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 15:
 
-			self.wm.kick_to(self.goal_pos, 1.0)
+			self.wm.kick_to(self.goal_pos, .1)
 			return True
 
 		else:	
@@ -113,7 +116,7 @@ class OffensiveAgent (Agent):
 		#end of method
 
 	"""@pass
-		Determine if the ball should be passed, if so pass and return true else return 			false
+		Determine if the ball should be passed, if so pass and return true else return false
 	"""
 	def pass_ball(self):
 	
@@ -141,7 +144,7 @@ class OffensiveAgent (Agent):
 		    else:
 			# face ball
 			self.wm.ah.turn(self.wm.ball.direction / 2)
-			return True
+			return True 
 		return False
 		 #end of method
 

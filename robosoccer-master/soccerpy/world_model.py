@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+
+"""@WorldModel
+    Documentation for this module.
+    General Agent for all the agents 
+    controls all agents not assigned to a specific
+    task
+"""
+
+# imports
 import math
 import random
 
@@ -62,6 +72,9 @@ class WorldModel:
         # anything specifically, but goals WILL start with these.
         GOAL_L = "goal_l_"
         GOAL_R = "goal_r_"
+
+#Start of methods
+#############################################################################################
 
         def __init__(self):
             raise NotImplementedError("Don't instantiate a RefereeMessages class,"
@@ -129,6 +142,7 @@ class WorldModel:
 
         # create a new server parameter object for holding all server params
         self.server_parameters = ServerParameters()
+	 #end of method
 
     def triangulate_direction(self, flags, flag_dict):
         """
@@ -151,6 +165,7 @@ class WorldModel:
             return sum(abs_angles) / len(abs_angles)
 
         return None
+	 #end of method
 
     def triangulate_position(self, flags, flag_dict, angle_step=36):
         """
@@ -196,6 +211,7 @@ class WorldModel:
                 max_points = len(clusters[c])
 
         return center_with_most_points
+	 #end of method
 
     def cluster_points(self, points, num_cluster_iterations=15):
         """
@@ -257,6 +273,7 @@ class WorldModel:
 
         # return latest cluster iteration
         return latest
+	 #end of method
 
     def euclidean_distance(self, point1, point2):
         """
@@ -269,6 +286,7 @@ class WorldModel:
         y2 = point2[1]
 
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+	 #end of method
 
     def angle_between_points(self, point1, point2):
         """
@@ -293,6 +311,7 @@ class WorldModel:
             a = 360 + a
 
         return a
+	 #end of method
 
     def process_new_info(self, ball, flags, goals, players, lines):
         """
@@ -322,6 +341,7 @@ class WorldModel:
             self.abs_body_dir = self.abs_neck_dir - self.neck_direction
         else:
             self.abs_body_dir = None
+		 #end of method
 
     def is_before_kick_off(self):
         """
@@ -329,6 +349,7 @@ class WorldModel:
         """
 
         return self.play_mode == WorldModel.PlayModes.BEFORE_KICK_OFF
+	 #end of method
 
     def is_kick_off_us(self):
         """
@@ -343,6 +364,7 @@ class WorldModel:
         # return whether we're on the side that's kicking off
         return (self.side == WorldModel.SIDE_L and self.play_mode == ko_left or
                 self.side == WorldModel.SIDE_R and self.play_mode == ko_right)
+		 #end of method
 
     def is_dead_ball_them(self):
         """
@@ -368,6 +390,7 @@ class WorldModel:
             return free_right
         else:
             return free_left
+		#end of method
 
     def is_ball_kickable(self):
         """
@@ -378,6 +401,7 @@ class WorldModel:
         return (self.ball is not None and
                 self.ball.distance is not None and
                 self.ball.distance <= self.server_parameters.kickable_margin)
+		 #end of method
 
     def get_ball_speed_max(self):
         """
@@ -385,6 +409,7 @@ class WorldModel:
         """
 
         return self.server_parameters.ball_speed_max
+	 #end of method
 
     def kick_to(self, point, extra_power=0.0):
         """
@@ -424,6 +449,7 @@ class WorldModel:
 
         # do the kick, finally
         self.ah.kick(rel_point_dir, power)
+	 #end of method
 
     def get_effective_kick_power(self, ball, power):
         """
@@ -449,6 +475,7 @@ class WorldModel:
 
         # ...and then return it
         return 1 - a - b
+	 #end of method
 
     def turn_neck_to_object(self, obj):
         """
@@ -456,6 +483,7 @@ class WorldModel:
         """
 
         self.ah.turn_neck(obj.direction)
+	 #end of method
 
     def get_distance_to_point(self, point):
         """
@@ -464,6 +492,7 @@ class WorldModel:
         """
 
         return self.euclidean_distance(self.abs_coords, point)
+	 #end of method
 
     def turn_body_to_point(self, point):
         """
@@ -478,6 +507,7 @@ class WorldModel:
 
         # turn to that angle
         self.ah.turn(relative_dir)
+	 #end of method
 
     def get_object_absolute_coords(self, obj):
         """
@@ -496,6 +526,7 @@ class WorldModel:
 
         # return the point the object is at relative to our current position
         return (self.abs_coords[0] + dx, self.abs_coords[1] + dy)
+	 #end of method
 
     def teleport_to_point(self, point):
         """
@@ -503,6 +534,7 @@ class WorldModel:
         """
 
         self.ah.move(point[0], point[1])
+	 #end of method
 
     def align_neck_with_body(self):
         """
@@ -513,6 +545,7 @@ class WorldModel:
         # neck angle is relative to body, so we turn it back the inverse way
         if self.neck_direction is not None:
             self.ah.turn_neck(self.neck_direction * -1)
+		#end of method
 
     def get_nearest_teammate_to_point(self, point):
         """
@@ -534,6 +567,7 @@ class WorldModel:
         # return the nearest known teammate to the given point
         nearest = min(distances)[1]
         return nearest
+	 #end of method
 
     def get_stamina(self):
         """
@@ -541,6 +575,7 @@ class WorldModel:
         """
 
         return self.stamina
+	 #end of method
 
     def get_stamina_max(self):
         """
@@ -548,6 +583,7 @@ class WorldModel:
         """
 
         return self.server_parameters.stamina_max
+	 #end of method
 
     def turn_body_to_object(self, obj):
         """
@@ -555,6 +591,7 @@ class WorldModel:
         """
 
         self.ah.turn(obj.direction)
+	 #end of method
 
 class ServerParameters:
     """
@@ -732,4 +769,7 @@ class ServerParameters:
         self.wind_none = 0
         self.wind_rand = 0
         self.wind_random = 0
+	 #end of method
 
+#End of methods
+#############################################################################################

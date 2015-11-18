@@ -124,7 +124,7 @@ class MidfieldAgent (Agent):
 		#determine if the agent has the ball
 		if self.wm.is_ball_kickable():
 			#kick towards the opponets goalpost
-			self.wm.kick_to(self.goal_pos, 0.3)
+			self.wm.kick_to(self.goal_pos, 0.1)
 			return True
 		else:
 		    # move towards ball
