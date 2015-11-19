@@ -169,7 +169,7 @@ class GoalieAgent (Agent):
 	 #determine if the agent has the ball
 		if self.wm.ball.distance <= self.catch_perimeter:
 
-			#kick towards the opponets goalpost
+			#catch the ball
 			self.wm.ah.catch(self.wm.ball.direction)
 			
 			#after goalie catches the ball it should pass

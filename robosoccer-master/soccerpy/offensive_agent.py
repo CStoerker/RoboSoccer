@@ -16,7 +16,7 @@ class OffensiveAgent (Agent):
 
 	#variables
 	goal_pos = (55, 0)
-	#enemy_pos = (-55,0)
+	enemy_pos = (-55,0)
 
 #Start of methods
 #############################################################################################
@@ -61,7 +61,7 @@ class OffensiveAgent (Agent):
 				return
 		else:
 			# if it is before kick off then use the normal agent for setup
-		     self.general()
+			self.general()
 		return
 		 #end of method
 
@@ -79,10 +79,10 @@ class OffensiveAgent (Agent):
 		#check which side we are playing in
 		if self.wm.side == self.wm.SIDE_R:
 		    self.goal_pos = (-55, 0)
-		    #self.enemy_pos = (55,0)
+		    self.enemy_pos = (55,0)
 		else:
 		    self.goal_pos = (55, 0)
-		    #self.enemy_pos = (-55,0)
+		    self.enemy_pos = (-55,0)
 		return
 		 #end of method
 
@@ -106,10 +106,19 @@ class OffensiveAgent (Agent):
 	
 		# figure out how far the goal is and if there is someone in front of the 			player. If not, shoot
 		# kick it at the enemy goal if agent is within range of goal
-		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 15:
+		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 20:
 
-			self.wm.kick_to(self.goal_pos, .1)
-			return True
+			print "About to turn"
+			# get absolute direction to the point
+        		abs_point_dir = self.wm.angle_between_points(self.wm.abs_coords, self.enemy_pos)
+			print " angle %d" % abs_point_dir
+
+			if abs_point_dir < 180 and abs_point_dir > -180 :
+
+				self.wm.ah.turn(abs_point_dir)
+				print "About to shoot"
+				self.wm.kick_to(self.enemy_pos, 0.0)
+				return True
 
 		else:	
 			return False
@@ -133,7 +142,9 @@ class OffensiveAgent (Agent):
 		#determine if the agent has the ball
 		if self.wm.is_ball_kickable():
 			#Dribble towards the opponets goalpost
-			self.wm.kick_to(self.goal_pos, 0.1)
+
+			print "About to dribble"
+			self.wm.kick_to(self.enemy_pos, 0.01)
 			return True
 		else:
 		    # move towards ball
