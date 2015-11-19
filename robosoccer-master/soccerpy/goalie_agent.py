@@ -16,6 +16,10 @@ class GoalieAgent (Agent):
 
 	#variables
 	goal_pos = (55, 0)
+	goal_enemy_pos = (55, 0)
+
+	#goalies range
+	catch_perimeter = 3
 
 #Start of methods
 #############################################################################################
@@ -47,11 +51,7 @@ class GoalieAgent (Agent):
 
 			# if statement for when a player does have the ball
 			if True: 
-			    if self.shoot():
-				return
-			    if self.pass_ball():
-				return
-			    if self.dribble():
+			    if self.catch_ball():
 				return
 			else:
 			    if self.receive_pass():
@@ -128,7 +128,7 @@ class GoalieAgent (Agent):
 			return True
 		else:
 		    # move towards ball
-		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 120 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 95:
+		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 120 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 96:
 			self.wm.ah.dash(65)
 			return True
 		    else:
@@ -155,6 +155,29 @@ class GoalieAgent (Agent):
 	def open_space(self):
 
 		#figure out how to move when we dont have the ball or for interception
+
+		return False
+		 #end of method open_space
+	
+	"""@open_space
+		Determine if player should move to open space
+		how to move without the ball
+	"""
+	def catch_ball(self):
+
+	 #if the goalie can catch the ball then catch.
+	 #determine if the agent has the ball
+		if self.wm.ball.distance <= self.catch_perimeter:
+
+			#kick towards the opponets goalpost
+			self.wm.ah.catch(self.wm.ball.direction)
+			
+			#after goalie catches the ball it should pass
+			#self.pass_ball()
+			return True
+		else:
+		     #if you dont have the ball look for it
+		    self.dribble()
 
 		return False
 		 #end of method
