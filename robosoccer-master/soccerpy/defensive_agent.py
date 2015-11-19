@@ -16,6 +16,8 @@ class DefensiveAgent (Agent):
 
 	#variables
 	goal_pos = (55, 0)
+	original_place = (0.0,0.0)
+	at_original_place = True
 
 #Start of methods
 #############################################################################################
@@ -33,6 +35,11 @@ class DefensiveAgent (Agent):
 		If player has ball make ball decisions, otherwise make positioning based 			decisions
 	"""
 	def think(self):
+		
+		#if self.at_original_place is True:
+			#self.original_place = self.wm.abs_coords
+			#self.at_original_place = False
+			#return
 
 		# check the conditions of the field
 		self.check_values()
@@ -47,8 +54,6 @@ class DefensiveAgent (Agent):
 
 			# if statement for when a player does have the ball
 			if True: 
-			    if self.shoot():
-				return
 			    if self.pass_ball():
 				return
 			    if self.dribble():
@@ -101,13 +106,13 @@ class DefensiveAgent (Agent):
 	"""
 	def shoot(self):
 	
-		# figure out how far the goal is and if there is someone in front of the 			player. If not, shoot
+		# figure out how far the goal is and if there is someone in front of the player. If not, shoot
 
 		return False
 	 #end of method
 
 	"""@pass
-		Determine if the ball should be passed, if so pass and return true else return 			false
+		Determine if the ball should be passed, if so pass and return true else return 	false
 	"""
 	def pass_ball(self):
 	
@@ -117,23 +122,27 @@ class DefensiveAgent (Agent):
 	#end of method
 
 	"""@dribble
-		Determine if the ball should be carried up the field, if so dribble else 			return false
+		Determine if the ball should be carried up the field, if so dribble else return false
 	"""
 	def dribble(self):
 		
 		#determine if the agent has the ball
 		if self.wm.is_ball_kickable():
 			#kick towards the opponets goalpost
-			self.wm.kick_to(self.goal_pos, 0.1)
+			self.wm.kick_to(self.goal_pos, 0.0)
 			return True
 		else:
 		    # move towards ball
-		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 100 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 80:
+		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 100 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 80 and self.wm.ball.distance < 20:
 			self.wm.ah.dash(65)
 			return True
+		   # elif -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 100 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 80 and self.wm.ball.distance > 20:
+			#self.wm.turn_body_to_point(self.goal_pos)
+			#self.wm.ah.dash(65)
 		    else:
 			# face ball
 			self.wm.ah.turn(self.wm.ball.direction / 2)
+			
 			return True
 		return False
 		 #end of method
