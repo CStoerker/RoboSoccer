@@ -17,6 +17,7 @@ class OffensiveAgent (Agent):
 	#variables
 	goal_pos = (55, 0)
 	enemy_pos = (-55,0)
+	catch_perimeter = 5
 
 #Start of methods
 #############################################################################################
@@ -47,7 +48,7 @@ class OffensiveAgent (Agent):
 				return
 
 			# if statement for when a player does have the ball
-			if True: 
+			if self.wm.is_ball_kickable(): 
 			    if self.shoot():
 				return
 			    if self.pass_ball():
@@ -55,7 +56,9 @@ class OffensiveAgent (Agent):
 			    if self.dribble():
 				return
 			else:
-			    if self.receive_pass():
+		            if self.receive_pass():
+				return
+			    if self.go_to_ball():
 				return
 			    if self.open_space():
 				return
@@ -110,14 +113,16 @@ class OffensiveAgent (Agent):
 
 			print "About to turn"
 			# get absolute direction to the point
-        		abs_point_dir = self.wm.angle_between_points(self.wm.abs_coords, self.enemy_pos)
-			print " angle %d" % abs_point_dir
+        		#abs_point_dir = self.wm.angle_between_points(self.wm.abs_coords, self.enemy_pos)
+			pivot_angle = self.real_angle(self.wm.abs_coords, self.goal_pos)
+			print " angle %d" % pivot_angle
 
-			if abs_point_dir < 180 and abs_point_dir > -180 :
+			if pivot_angle < 180 and pivot_angle > -180 :
 
-				self.wm.ah.turn(abs_point_dir)
+				#self.wm.ah.turn(abs_point_dir)
 				print "About to shoot"
-				self.wm.kick_to(self.enemy_pos, 0.0)
+				#self.wm.kick_to(self.enemy_pos, 0.0)
+				self.wm.ah.kick(50, pivot_angle)
 				return True
 
 		else:	
@@ -144,7 +149,9 @@ class OffensiveAgent (Agent):
 			#Dribble towards the opponets goalpost
 
 			print "About to dribble"
-			self.wm.kick_to(self.enemy_pos, 0.01)
+			pivot_angle = self.real_angle(self.wm.abs_coords, self.goal_pos)
+			print "pivot = %d" % pivot_angle
+            		self.wm.ah.kick(15, pivot_angle)
 			return True
 		else:
 		    # move towards ball
@@ -165,6 +172,17 @@ class OffensiveAgent (Agent):
 	def receive_pass(self):
 	
 		#determine when to catch/intercept the ball
+		#determine if the agent has the ball
+		#print "in receiving ball"
+		if self.wm.ball.distance <= self.catch_perimeter:
+
+			#receive
+			#print "receiving ball dis %d " % self.wm.ball.distance
+			# face ball
+			self.wm.ah.turn(self.wm.ball.direction / 2)
+			self.wm.ah.dash(60)
+
+			return True
 
 		return False
 		 #end of method
@@ -173,12 +191,40 @@ class OffensiveAgent (Agent):
 		Determine if player should move to open space
 		how to move without the ball
 	"""
+	def go_to_ball(self):
+
+		# move towards ball
+		if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60 and self.wm.ball.distance >= self.catch_perimeter:
+
+			self.wm.ah.dash(65)
+			#print "dist %d" % self.wm.ball.distance
+			return True
+		else:
+			# face ball
+			self.wm.ah.turn(self.wm.ball.direction / 2)
+			return True 
+		#end of method
+
 	def open_space(self):
 
 		#figure out how to move when we dont have the ball or for interception
 
 		return False
 		 #end of method
+	"""@real_angle
+
+	"""
+	def real_angle(self, point1, point2):
+
+		direction_point = 0
+		angle = self.wm.angle_between_points(point1, point2)
+
+		#see if the agent is in motion
+		if self.wm.abs_body_dir is not None:
+
+		    direction_point = self.wm.abs_body_dir - angle
+
+		return direction_point
 
 #end of OffensiveAgent Class
 #############################################################################################

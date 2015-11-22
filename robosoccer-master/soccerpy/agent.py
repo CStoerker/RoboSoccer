@@ -131,13 +131,14 @@ class Agent:
 	"""
 	def set_starting_postion(self):
 
-	 # used to flip x coords for other side
-	    side_mod = 1
+	# used to flip x coords for other side
+            if self.wm.side == WorldModel.SIDE_L:
+                side_mod = 1
 
-	    if self.wm.side == WorldModel.SIDE_R:
-		side_mod = -1
+	    elif self.wm.side == WorldModel.SIDE_R:
+                side_mod = -1
 
-	    if self.wm.uniform_number == 1:
+            if self.wm.uniform_number == 1:
 		return(-50 * side_mod, 0)
 	    elif self.wm.uniform_number == 2:
 		return(-35 * side_mod, 20)
@@ -161,7 +162,7 @@ class Agent:
 		return(-10 * side_mod, -5)
 
 		#if an error
-	    return(0,0)
+	    return (0,0)
 
 	"""@play
 		Kicks off the thread that does the agent's thinking, allowing it to play
@@ -294,9 +295,9 @@ class Agent:
 		# determine the enemy goal position
 		#goal_pos = None
 		if self.wm.side == WorldModel.SIDE_R:
-		    goal_pos = (-55, 0)
+		    self.goal_pos = (-55, 0)
 		else:
-		    goal_pos = (55, 0)
+		    self.goal_pos = (55, 0)
 
 		self.in_kick_off_formation = False
 		 #end of method
@@ -314,26 +315,34 @@ class Agent:
 		# take places on the field by uniform number
 		if self.wm.is_before_kick_off():
 
+		 # take places on the field by uniform number
+        		if not self.in_kick_off_formation:
+
 			#set the players on the field
-		    self.starting_field_position()
+			    self.starting_field_position()
 
-		    self.in_kick_off_formation = True
+			    self.in_kick_off_formation = True
 
-		    return
+			return
 
 		# Referee started Kick Off
 		if self.wm.is_before_kick_off():
+
 		    # player 10 takes the kick off
 		    if self.wm.uniform_number == 10:
+
 			if self.wm.is_ball_kickable():
 			    # kick with 100% extra effort at enemy goal
-			    self.wm.kick_to(goal_pos, 1.0)
+			    self.wm.kick_to(self.goal_pos, 1.0)
+
 			else:
 			    # move towards ball
 			    if self.wm.ball is not None:
+
 				if (self.wm.ball.direction is not None and
 				        -7 <= self.wm.ball.direction <= 7):
 				    self.wm.ah.dash(50)
+
 				else:
 				    self.wm.turn_body_to_point((0, 0))
 
@@ -345,6 +354,7 @@ class Agent:
 
 		# attack!
 		else:
+
 		    # find the ball
 		    if self.wm.ball is None or self.wm.ball.direction is None:
 			self.wm.ah.turn(30)
@@ -353,7 +363,7 @@ class Agent:
 
 		    # kick it at the enemy goal if agent is within range of goal
 		    if self.wm.is_ball_kickable():
-			self.wm.kick_to(goal_pos, 1.0)
+			self.wm.kick_to(self.goal_pos, 1.0)
 			return
 		    else:
 			# move towards ball

@@ -1,11 +1,5 @@
 #!/bin/sh
 
-"""@Run
-    Documentation for this module.
-    General Agent for all the agents 
-    controls all agents not assigned to a specific
-    task
-"""
 #create a directory for log files
 mkdir -p log
 pushd log
