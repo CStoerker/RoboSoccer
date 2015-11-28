@@ -153,8 +153,35 @@ class DefensiveAgent (Agent):
 	def receive_pass(self):
 	
 		#determine when to catch/intercept the ball
-
-		return False
+		if self.wm.is_ball_kickable():
+			return False
+			
+		ball_coords = self.wm.get_object_absolute_coords(self.wm.ball)
+		ball_dist = self.wm.euclidean_distance(self.wm.abs_coords, ball_coords)
+		
+		if(ball_coords[1]<self.wm.abs_coords[1]):#ball is above player y
+			if self.wm.ball.direction>=0:#ball to right of player x
+				self.wm.ah.turn(self.wm.ball.direction / 2 )
+			elif self.wm.ball.direction<=0:# ball to left of player x
+				self.wm.ah.turn(self.wm.ball.direction / 2 )
+		if(ball_coords[1]>self.wm.abs_coords[1]):#ball is below player y
+			if self.wm.ball.direction>=0:#ball to right of player x
+				self.wm.ah.turn(self.wm.ball.direction / 2 )
+			elif self.wm.ball.direction<=0:#ball to left of player x
+				self.wm.ah.turn(self.wm.ball.direction / 2 )
+			
+			if (ball_dist <= 8):
+				self.wm.ah.dash(100)
+			if (ball_dist <= 4):
+				self.wm.ah.catch(self.wm.ball.direction / 2)
+		#else:
+			#if(ball_coords[1]<self.wm.abs_coords[1]):
+			#if(ball_coords[1]>self.wm.abs_coords[1]):
+			#self.wm.ah.turn(self.wm.ball.direction / 2)
+		
+		return True
+		
+		
 		 #end of method
 
 	"""@open_space
