@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
 	#Create the defensive positon players
     for agent in range(0, num_defenders):
-        print "  Spawning num_forward agent %d..." % (agent +1)
+        print "  Spawning num_defence agent %d..." % (agent +1)
 
         at = mp.Process(target=spawn_agent, args=(TEAM_NAME, DefensiveAgent))
         at.daemon = True
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
 	#Create the midfield positon players
     for agent in range(0, num_midfields):
-        print "  Spawning num_forward agent %d..." % (agent +1)
+        print "  Spawning num_midfield agent %d..." % (agent +1)
 
         at = mp.Process(target=spawn_agent, args=(TEAM_NAME, MidfieldAgent))
         at.daemon = True

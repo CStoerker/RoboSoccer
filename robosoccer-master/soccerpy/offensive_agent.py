@@ -56,8 +56,8 @@ class OffensiveAgent (Agent):
 			    if self.dribble():
 				return
 			else:
-		            if self.receive_pass():
-				return
+		            #if self.receive_pass():
+				#return
 			    if self.go_to_ball():
 				return
 			    if self.open_space():
@@ -106,24 +106,16 @@ class OffensiveAgent (Agent):
 		if so shoot and return true else return false
 	"""
 	def shoot(self):
-	
-		# figure out how far the goal is and if there is someone in front of the 			player. If not, shoot
-		# kick it at the enemy goal if agent is within range of goal
+
+		#determine if the agent has the ball
 		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 20:
+			#Dribble towards the opponets goalpost
 
-			print "About to turn"
-			# get absolute direction to the point
-        		#abs_point_dir = self.wm.angle_between_points(self.wm.abs_coords, self.enemy_pos)
+			print "About to shoot"
 			pivot_angle = self.real_angle(self.wm.abs_coords, self.goal_pos)
-			print " angle %d" % pivot_angle
-
-			if pivot_angle < 180 and pivot_angle > -180 :
-
-				#self.wm.ah.turn(abs_point_dir)
-				print "About to shoot"
-				#self.wm.kick_to(self.enemy_pos, 0.0)
-				self.wm.ah.kick(50, pivot_angle)
-				return True
+			print "pivot = %d" % pivot_angle
+            		self.wm.ah.kick(30, pivot_angle)
+			return True
 
 		else:	
 			return False
@@ -194,10 +186,12 @@ class OffensiveAgent (Agent):
 	def go_to_ball(self):
 
 		# move towards ball
-		if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60 and self.wm.ball.distance >= self.catch_perimeter:
+		if -7 <= self.wm.ball.direction <= 7:
 
-			self.wm.ah.dash(65)
-			#print "dist %d" % self.wm.ball.distance
+			if self.wm.ball.distance >= 10:
+				 self.wm.ah.dash(85)
+			else:
+				self.wm.ah.dash(55)
 			return True
 		else:
 			# face ball

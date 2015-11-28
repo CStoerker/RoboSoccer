@@ -136,9 +136,10 @@ class Agent:
                 side_mod = 1
 
 	    elif self.wm.side == WorldModel.SIDE_R:
-                side_mod = -1
+                side_mod = 1
 
             if self.wm.uniform_number == 1:
+		print "UNIFORM 1 %d " % (-50 * side_mod)
 		return(-50 * side_mod, 0)
 	    elif self.wm.uniform_number == 2:
 		return(-35 * side_mod, 20)
@@ -307,27 +308,29 @@ class Agent:
 	iteration of our think loop.
 	"""
 	def think(self):
-
+		
 		# DEBUG:  tells us if a thread dies
 		if not self.__think_thread.is_alive() or not self.__msg_thread.is_alive():
 		    raise Exception("A thread died.")
 
 		# take places on the field by uniform number
 		if self.wm.is_before_kick_off():
-
+			
 		 # take places on the field by uniform number
         		if not self.in_kick_off_formation:
 
 			#set the players on the field
-			    self.starting_field_position()
+				print "in side L"
+			    	self.starting_field_position()
+			    
 
-			    self.in_kick_off_formation = True
-
+			    	self.in_kick_off_formation = True
+			    
 			return
 
 		# Referee started Kick Off
 		if self.wm.is_before_kick_off():
-
+		    
 		    # player 10 takes the kick off
 		    if self.wm.uniform_number == 10:
 

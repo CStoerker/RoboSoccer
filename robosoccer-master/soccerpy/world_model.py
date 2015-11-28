@@ -448,7 +448,7 @@ class WorldModel:
         power = required_power * power_mod
 
         # do the kick, finally
-        self.ah.kick(rel_point_dir, power)
+        self.ah.kick(power,rel_point_dir)
 	 #end of method
 
     def get_effective_kick_power(self, ball, power):

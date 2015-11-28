@@ -36,8 +36,8 @@ def spawn_agent(team_name):
 if __name__ == "__main__":
     
     agentthreads = []
-    for agent in xrange(min(11, PLAYER_COUNT)):
-        print "  Spawning agent %d..." % agent
+    for agent in range(min(11, PLAYER_COUNT)):
+        print "  Spawning dummy agent %d..." % agent
 
         at = mp.Process(target=spawn_agent, args=(TEAM_NAME,))
         at.daemon = True
