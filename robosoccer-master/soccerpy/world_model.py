@@ -569,10 +569,8 @@ class WorldModel:
 	    #print "DISTANCES = %s" % (distances,)
         # return the nearest known teammate to the given point
         if (len(distances)<1 or distances is None):
-        	print "default player: %s" % (self)
         	return neutral_pos
         nearest = min(distances)[1]
-        print "nearest: %s" % (nearest)
         #return goal_pos
         return self.get_object_absolute_coords(nearest)
 	 #end of method
