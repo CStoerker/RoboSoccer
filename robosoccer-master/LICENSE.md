@@ -1,5 +1,5 @@
 CS420 Artificial Inteligence Robot Soccer Project
-Copyright © 2015 Ian Brennan, Renan Dincer, John Gehrig
+Copyright © 2015 Matt Smalley, Manuel Tenorio, Conrad Stoerker
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -34,7 +34,7 @@ TEAM_NAME = 'Mannynator'
 num_goalie = 1
 
 # number of forward agents
-num_forwards = 2
+num_forwards = 1
 
 # Number of midfield Agents
 num_midfields = 4

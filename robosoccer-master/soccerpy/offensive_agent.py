@@ -9,7 +9,7 @@
 
 # imports
 from agent import Agent
-
+import math
 
 # start of class
 class OffensiveAgent (Agent):
@@ -49,8 +49,8 @@ class OffensiveAgent (Agent):
 
 			# if statement for when a player does have the ball
 			if self.wm.is_ball_kickable(): 
-			    if self.shoot():
-				return
+			    #if self.shoot():
+				#return
 			    if self.pass_ball():
 				return
 			    if self.dribble():
@@ -141,13 +141,21 @@ class OffensiveAgent (Agent):
 			#Dribble towards the opponets goalpost
 
 			print "About to dribble"
-			pivot_angle = self.real_angle(self.wm.abs_coords, self.goal_pos)
+			pivot_angle = self.calcAngleToCoords(self.wm.abs_body_dir,self.wm.abs_coords, self.goal_pos)
+			print "pivot = %d" % pivot_angle
+			#self.wm.ah.turn(pivot_angle)
+
+			if pivot_angle < -90:
+				pivot_angle = -90
+			if pivot_angle > 90:
+				pivot_angle = 90
+			self.wm.ah.turn(pivot_angle)
 			print "pivot = %d" % pivot_angle
             		self.wm.ah.kick(15, pivot_angle)
 			return True
 		else:
 		    # move towards ball
-		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60:
+		    if -7 <= self.wm.ball.direction <= 7:# and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60:
 
 			self.wm.ah.dash(65)
 			return True
@@ -219,6 +227,22 @@ class OffensiveAgent (Agent):
 		    direction_point = self.wm.abs_body_dir - angle
 
 		return direction_point
+
+	def calcAngleToCoords(self, curAngle, curPosition, targPosition):
+	   	retVal = False
+
+		x_1, y_1 = curPosition
+		x_2, y_2 = targPosition
+		# Sets origin coordinate to zero
+		x_2 = x_2 - x_1
+		y_2 = y_2 - y_1
+		angle = curAngle * (math.pi / 180)
+		dx = math.cos(angle)
+		dy = math.sin(angle)
+		turnArc = math.atan2(x_2 * dy - y_2 * dx,  x_2 * dx + y_2 * dy ) * (180 / math.pi)
+		retVal = turnArc
+
+	        return(retVal)
 
 #end of OffensiveAgent Class
 #############################################################################################
