@@ -156,27 +156,85 @@ class MidfieldAgent (Agent):
 	#end of method pass_ball
 
 	"""@dribble
-		Determine if the ball should be carried up the field, if so dribble else 			return false
+		Determine if the ball should be carried up the field, if so dribble else return false
 	"""
 	def dribble(self):
 		
 		#determine if the agent has the ball
 		if self.wm.is_ball_kickable():
-			#kick towards the opponets goalpost
-			self.wm.kick_to(self.goal_pos, 0.1)
+			#Dribble towards the opponets goalpost
+
+			print "About to dribble"
+			pivot_angle = self.calcAngleToCoords(self.wm.abs_body_dir,self.wm.abs_coords, self.goal_pos)
+			print "pivot = %d" % pivot_angle
+			#self.wm.ah.turn(pivot_angle)
+
+			if pivot_angle < -90:
+				pivot_angle = -90
+			if pivot_angle > 90:
+				pivot_angle = 90
+			self.wm.ah.turn(pivot_angle)
+			print "pivot = %d" % pivot_angle
+            		self.wm.ah.kick(15, pivot_angle)
 			return True
 		else:
 		    # move towards ball
-		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 75 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 47 and self.wm.ball.distance < 20:
+		    if -7 <= self.wm.ball.direction <= 7:# and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60:
 
 			self.wm.ah.dash(65)
 			return True
 		    else:
 			# face ball
 			self.wm.ah.turn(self.wm.ball.direction / 2)
-			return True
+			return True 
 		return False
 		 #end of method
+	def go_to_ball(self):
+
+		# move towards ball
+		if -7 <= self.wm.ball.direction <= 7:
+
+			if self.wm.ball.distance >= 10:
+				 self.wm.ah.dash(85)
+			else:
+				self.wm.ah.dash(55)
+			return True
+		else:
+			# face ball
+			self.wm.ah.turn(self.wm.ball.direction / 2)
+			return True 
+		#end of method
+
+	"""@real_angle
+	"""
+	def real_angle(self, point1, point2):
+
+		direction_point = 0
+		angle = self.wm.angle_between_points(point1, point2)
+
+		#see if the agent is in motion
+		if self.wm.abs_body_dir is not None:
+
+		    direction_point = self.wm.abs_body_dir - angle
+
+		return direction_point
+
+	def calcAngleToCoords(self, curAngle, curPosition, targPosition):
+	   	retVal = False
+
+		x_1, y_1 = curPosition
+		x_2, y_2 = targPosition
+		# Sets origin coordinate to zero
+		x_2 = x_2 - x_1
+		y_2 = y_2 - y_1
+		angle = curAngle * (math.pi / 180)
+		dx = math.cos(angle)
+		dy = math.sin(angle)
+		turnArc = math.atan2(x_2 * dy - y_2 * dx,  x_2 * dx + y_2 * dy ) * (180 / math.pi)
+		retVal = turnArc
+
+	        return(retVal)
+
 
 	"""@receive_pass
 		Determine if the player should move into position to accept a pass
