@@ -235,7 +235,7 @@ class DefensiveAgent (Agent):
 			return True
 		else:
 		    # move towards ball
-		    if -7 <= self.wm.ball.direction <= 7:# and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 60:
+		    if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 100 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 80 and self.wm.ball.distance < 20:
 
 			self.wm.ah.dash(65)
 			return True
