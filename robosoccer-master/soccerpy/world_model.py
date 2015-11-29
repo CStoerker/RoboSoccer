@@ -549,24 +549,32 @@ class WorldModel:
 
     def get_nearest_teammate_to_point(self, point):
         """
-        Returns the uniform number of the fastest teammate to some point.
+        Returns the coordinates of the nearest teammate to some point, if no teammate is found then returns (0,0)
         """
-
+	goal_pos = (55,0)
+	home_pos = (-55,0)
+	neutral_pos = (0,0)
         # holds tuples of (player dist to point, player)
         distances = []
+        #default_player = 1 #default player is goalie
         for p in self.players:
-            # skip enemy and unknwon players
-            if p.side != self.side:
+            # skip enemy and unknown players
+            if (p is None or p.side != self.side):
                 continue
-
             # find their absolute position
             p_coords = self.get_object_absolute_coords(p)
-
+	    if(p_coords is None or len(p_coords)<1):
+	    	continue
             distances.append((self.euclidean_distance(point, p_coords), p))
-
+	    #print "DISTANCES = %s" % (distances,)
         # return the nearest known teammate to the given point
+        if (len(distances)<1 or distances is None):
+        	print "default player: %s" % (self)
+        	return neutral_pos
         nearest = min(distances)[1]
-        return nearest
+        print "nearest: %s" % (nearest)
+        #return goal_pos
+        return self.get_object_absolute_coords(nearest)
 	 #end of method
 
     def get_stamina(self):
