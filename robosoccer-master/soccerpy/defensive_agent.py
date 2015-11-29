@@ -118,8 +118,47 @@ class DefensiveAgent (Agent):
 	
 		#determine when to pass the ball
 
+		#determine if the agent has the ball
+		if self.wm.is_ball_kickable():
+			#kick towards the closest teammate
+			
+			mypos = self.wm.abs_coords
+			
+			coords = self.wm.get_nearest_teammate_to_point(mypos)
+			
+			#coords = self.wm.get_object_absolute_coords(closest_mate)
+			
+			#coords = (55,0)
+			run_speed = 75
+			
+			#self.wm.turn_body_to_point(mate_coords)
+			angle = self.wm.angle_between_points(mypos, coords)
+			
+			if(angle > 180):
+				angle = angle - 360
+			elif(angle < -180):
+				angle = angle + 360
+			
+			print "angle: %d" % (angle)
+			print "passing to %s" % (coords,)
+			self.wm.ah.turn(angle)
+			
+			if(self.wm.ball.distance <=7):
+				run_speed = 55
+			#self.wm.ah.dash(run_speed)
+			
+			#self.wm.ah.turn_neck(angle)
+			if self.wm.is_ball_kickable():
+				self.wm.ah.kick(30, angle)
+			#self.wm.ah.turn_neck(-angle)
+			#self.wm.kick_to(coords, 0.0)
+
+			return True
+		else:
+		    return False
+
 		return False
-	#end of method
+	#end of method pass_ball
 
 	"""@dribble
 		Determine if the ball should be carried up the field, if so dribble else return false
