@@ -217,6 +217,7 @@ class OffensiveAgent (Agent):
 		Determine if the player should move into position to accept a pass
 	"""
 	def receive_pass(self):
+
 		#determine when to catch/intercept the ball
 		if self.wm.is_ball_kickable():
 			return True	

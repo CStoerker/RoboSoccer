@@ -112,9 +112,52 @@ class GoalieAgent (Agent):
 	def pass_ball(self):
 	
 		#determine when to pass the ball
+		
+		if (self.wm.players is None):
+				self.wm.ah.turn(30)
+				return
+		
+		#determine if the agent has the ball
+		if (self.wm.is_ball_kickable() and self.wm.get_nearest_enemy_to_point_dist(self.wm.abs_coords)<8):
+			#kick towards the closest teammate
+			
+			mypos = self.wm.abs_coords
+			
+			coords = self.wm.get_nearest_teammate_to_point(mypos)
+			
+			#coords = self.wm.get_object_absolute_coords(closest_mate)
+			
+			#coords = (55,0)
+			run_speed = 75
+			
+			#self.wm.turn_body_to_point(mate_coords)
+			angle = self.wm.angle_between_points(mypos, coords)
+			
+			if(angle > 180):
+				angle = angle - 360
+			elif(angle < -180):
+				angle = angle + 360
+			
+			print "angle: %d" % (angle)
+			print "passing to %s" % (coords,)
+			self.wm.ah.turn(angle)
+			
+			if(self.wm.ball.distance <=7):
+				run_speed = 55
+			#self.wm.ah.dash(run_speed)
+			
+			#self.wm.ah.turn_neck(angle)
+			if self.wm.is_ball_kickable():
+				self.wm.ah.kick(30, -angle)
+			#self.wm.ah.turn_neck(-angle)
+				#self.wm.kick_to(coords, 0.0)
+
+			return True
+		else:
+		    return False
 
 		return False
-	#end of method
+	#end of method pass_ball
 
 	"""@dribble
 		Determine if the ball should be carried up the field, if so dribble else 			return false
@@ -144,9 +187,35 @@ class GoalieAgent (Agent):
 	def receive_pass(self):
 	
 		#determine when to catch/intercept the ball
-
+		if self.wm.is_ball_kickable():
+			return True	
+		# if statement for when player does not have the ball
+		if self.wm.ball is None or self.wm.ball.direction is None:
+			self.wm.ah.turn(30)
+			return
+		
+		ball_coords = self.wm.get_object_absolute_coords(self.wm.ball)
+		ball_dist = self.wm.euclidean_distance(self.wm.abs_coords, ball_coords)
+		
+		if not(-7 <= self.wm.ball.direction <=7):
+				self.wm.ah.turn(self.wm.ball.direction / 2)
+		if (ball_dist <= 8):
+			
+			if (ball_dist <= 2):
+				self.wm.ah.catch(self.wm.ball.direction / 2)
+				return
+			if (ball_dist <= 6):
+		
+				if 0 >= self.wm.ball.direction:
+					self.wm.ah.turn(-self.wm.ball.direction/2)
+				elif 0<=self.wm.ball.direction:
+					self.wm.ah.turn(-self.wm.ball.direction/2)
+	
+				self.wm.ah.dash(80)
 		return False
-		 #end of method
+		
+		
+		 #end of method reveive pass
 
 	"""@open_space
 		Determine if player should move to open space
@@ -172,7 +241,7 @@ class GoalieAgent (Agent):
 			self.wm.ah.catch(self.wm.ball.direction)
 			
 			#after goalie catches the ball it should pass
-			#self.pass_ball()
+			self.pass_ball()
 			return True
 		else:
 		     #if you dont have the ball look for it
