@@ -159,35 +159,36 @@ class DefensiveAgent (Agent):
 		Determine if the player should move into position to accept a pass
 	"""
 	def receive_pass(self):
-	
 		#determine when to catch/intercept the ball
 		if self.wm.is_ball_kickable():
-			return False
-			
+			return True	
+		# if statement for when player does not have the ball
+		if self.wm.ball is None or self.wm.ball.direction is None:
+			self.wm.ah.turn(30)
+			return
+		
 		ball_coords = self.wm.get_object_absolute_coords(self.wm.ball)
 		ball_dist = self.wm.euclidean_distance(self.wm.abs_coords, ball_coords)
 		
-		if(ball_coords[1]<self.wm.abs_coords[1]):#ball is above player y
-			if self.wm.ball.direction>=0:#ball to right of player x
-				self.wm.ah.turn(self.wm.ball.direction / 2 )
-			elif self.wm.ball.direction<=0:# ball to left of player x
-				self.wm.ah.turn(self.wm.ball.direction / 2 )
-		if(ball_coords[1]>self.wm.abs_coords[1]):#ball is below player y
-			if self.wm.ball.direction>=0:#ball to right of player x
-				self.wm.ah.turn(self.wm.ball.direction / 2 )
-			elif self.wm.ball.direction<=0:#ball to left of player x
-				self.wm.ah.turn(self.wm.ball.direction / 2 )
+		if not(-7 <= self.wm.ball.direction <=7):
+				self.wm.ah.turn(self.wm.ball.direction / 2)
+		if (ball_dist <= 8):
 			
-			if (ball_dist <= 8):
-				self.wm.ah.dash(100)
-			if (ball_dist <= 4):
+			if (ball_dist <= 2):
 				self.wm.ah.catch(self.wm.ball.direction / 2)
-		#else:
-			#if(ball_coords[1]<self.wm.abs_coords[1]):
-			#if(ball_coords[1]>self.wm.abs_coords[1]):
-			#self.wm.ah.turn(self.wm.ball.direction / 2)
+				return
+			if (ball_dist <= 6):
 		
-		return True
+				if 0 >= self.wm.ball.direction:
+					self.wm.ah.turn(-self.wm.ball.direction/2)
+				elif 0<=self.wm.ball.direction:
+					self.wm.ah.turn(-self.wm.ball.direction/2)
+	
+				self.wm.ah.dash(80)
+
+			
+		
+		return False
 		
 		
 		 #end of method
