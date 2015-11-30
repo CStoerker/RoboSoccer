@@ -109,9 +109,13 @@ class DefensiveAgent (Agent):
 	def pass_ball(self):
 	
 		#determine when to pass the ball
-
+		
+		if (self.wm.players is None):
+				self.wm.ah.turn(30)
+				return
+		
 		#determine if the agent has the ball
-		if self.wm.is_ball_kickable():
+		if (self.wm.is_ball_kickable() and self.wm.get_nearest_enemy_to_point_dist(self.wm.abs_coords)<8):
 			#kick towards the closest teammate
 			
 			mypos = self.wm.abs_coords
@@ -141,15 +145,16 @@ class DefensiveAgent (Agent):
 			
 			#self.wm.ah.turn_neck(angle)
 			if self.wm.is_ball_kickable():
-				self.wm.ah.kick(30, angle)
+				self.wm.ah.kick(30, -angle)
 			#self.wm.ah.turn_neck(-angle)
-			#self.wm.kick_to(coords, 0.0)
+				#self.wm.kick_to(coords, 0.0)
 
 			return True
 		else:
 		    return False
 
 		return False
+	#end of method pass_ball
 	#end of method pass_ball
 
 	
