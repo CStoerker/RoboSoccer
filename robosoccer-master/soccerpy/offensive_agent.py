@@ -46,13 +46,13 @@ class OffensiveAgent (Agent):
 			if self.wm.is_ball_kickable(): 
 			    if self.shoot():
 				return
-			    #if self.pass_ball():
-				#return
+			    if self.pass_ball():
+				return
 			    if self.dribble():
 				return
 			else:
-		            #if self.receive_pass():
-				#return
+		            if self.receive_pass():
+				return
 			    if self.go_to_ball():
 				return
 			    if self.open_space():

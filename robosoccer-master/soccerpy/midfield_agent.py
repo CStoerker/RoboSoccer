@@ -49,8 +49,8 @@ class MidfieldAgent (Agent):
 			    if self.dribble():
 				return
 			else:
-		            #if self.receive_pass():
-				#return
+		            if self.receive_pass():
+				return
 			    if self.go_to_ball():
 				return
 			    if self.open_space():
