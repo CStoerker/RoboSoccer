@@ -575,6 +575,38 @@ class WorldModel:
         return self.get_object_absolute_coords(nearest)
 	 #end of method
 
+    def get_nearest_enemy_to_point(self, point):
+    	goal_pos = (55,0)
+	home_pos = (-55,0)
+	neutral_pos = (0,0)
+        # holds tuples of (player dist to point, player)
+        distances = []
+        #default_player = 1 #default player is goalie
+        for p in self.players:
+            # skip enemy and unknown players
+            if (p is None or p.side == self.side):
+                continue
+            # find their absolute position
+            p_coords = self.get_object_absolute_coords(p)
+	    if(p_coords is None or len(p_coords)<1):
+	    	continue
+            distances.append((self.euclidean_distance(point, p_coords), p))
+	    #print "DISTANCES = %s" % (distances,)
+        # return the nearest known teammate to the given point
+        if (len(distances)<1 or distances is None):
+        	return neutral_pos
+        nearest = min(distances)[1]
+        #return goal_pos
+        return self.get_object_absolute_coords(nearest)
+	 #end of method
+    
+    
+    #gets distance between point and nearest enemy to point
+    def get_nearest_enemy_to_point_dist(self, point):
+    	return self.euclidean_distance(point, self.get_nearest_enemy_to_point(point))
+    	
+    	
+	
     def get_stamina(self):
         """
         Returns the agent's current stamina amount.
