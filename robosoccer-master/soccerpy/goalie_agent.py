@@ -50,7 +50,7 @@ class GoalieAgent (Agent):
 				return
 
 			# if statement for when a player does have the ball
-			if True: 
+			if self.wm.is_ball_kickable(): 
 			    if self.catch_ball():
 				return
 			else:
@@ -159,9 +159,8 @@ class GoalieAgent (Agent):
 		return False
 		 #end of method open_space
 	
-	"""@open_space
-		Determine if player should move to open space
-		how to move without the ball
+	"""@catch_ball
+		Determine if player should catch the ball
 	"""
 	def catch_ball(self):
 

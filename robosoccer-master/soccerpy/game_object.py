@@ -1,4 +1,10 @@
 
+"""@Game_object
+    Documentation for this module.
+    General Agent for all the agents 
+    controls all agents not assigned to a specific
+    task
+"""
 class GameObject:
     """
     Root class for all percievable objects in the world model.
@@ -171,3 +177,5 @@ class Player(MobileObject):
         MobileObject.__init__(self, distance, direction, dist_change,
                 dir_change, speed)
 
+#end of Game_object
+################################################################################################

@@ -320,7 +320,6 @@ class Agent:
         		if not self.in_kick_off_formation:
 
 			#set the players on the field
-				print "in side L"
 			    	self.starting_field_position()
 			    
 

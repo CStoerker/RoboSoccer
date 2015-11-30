@@ -9,7 +9,7 @@
 
 # imports
 from agent import Agent
-
+import math
 
 # start of class
 class MidfieldAgent (Agent):
@@ -39,14 +39,9 @@ class MidfieldAgent (Agent):
 
 		# if statement for after kick off
 		if not self.wm.is_before_kick_off():
-		
-			# if statement for when player does not have the ball
-			if self.wm.ball is None or self.wm.ball.direction is None:
-				self.wm.ah.turn(30)
-				return
 
 			# if statement for when a player does have the ball
-			if True: 
+			if self.wm.is_ball_kickable(): 
 			    if self.shoot():
 				return
 			    if self.pass_ball():
@@ -54,7 +49,9 @@ class MidfieldAgent (Agent):
 			    if self.dribble():
 				return
 			else:
-			    if self.receive_pass():
+		            #if self.receive_pass():
+				#return
+			    if self.go_to_ball():
 				return
 			    if self.open_space():
 				return
@@ -101,10 +98,26 @@ class MidfieldAgent (Agent):
 	"""
 	def shoot(self):
 	
-		# figure out how far the goal is and if there is someone in front of the 			player. If not, shoot
+		#determine if the agent has the ball
+		if self.wm.is_ball_kickable() and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 75:
+			#Dribble towards the opponets goalpost
 
-		return False
-	 #end of method
+			print "About to shoot"
+			pivot_angle = self.calcAngleToCoords(self.wm.abs_body_dir,self.wm.abs_coords, self.goal_pos)
+			print "pivot = %d" % pivot_angle
+			#self.wm.ah.turn(pivot_angle)
+
+			if pivot_angle < -90:
+				pivot_angle = -90
+			if pivot_angle > 90:
+				pivot_angle = 90
+			self.wm.ah.turn(pivot_angle)
+			print "pivot = %d" % pivot_angle
+            		self.wm.ah.kick(25, pivot_angle)
+			return True
+		else:	
+			return False
+		#end of method
 
 	"""@pass
 		Determine if the ball should be passed, if so pass and return true else return 			false
@@ -189,10 +202,17 @@ class MidfieldAgent (Agent):
 			return True 
 		return False
 		 #end of method
+
+
 	def go_to_ball(self):
 
+		# if statement for when player does not have the ball
+		if self.wm.ball is None or self.wm.ball.direction is None:
+			self.wm.ah.turn(30)
+			return
+
 		# move towards ball
-		if -7 <= self.wm.ball.direction <= 7:
+		if -7 <= self.wm.ball.direction <= 7 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) <= 75 and self.wm.euclidean_distance(self.wm.abs_coords,self.goal_pos) >= 47 and self.wm.ball.distance < 20:
 
 			if self.wm.ball.distance >= 10:
 				 self.wm.ah.dash(85)
@@ -205,9 +225,11 @@ class MidfieldAgent (Agent):
 			return True 
 		#end of method
 
-	"""@real_angle
+	"""@realative_directon
+		gets the relative angle using the absolute angle and 
+		the direction of our current direction
 	"""
-	def real_angle(self, point1, point2):
+	def relative_directon(self, point1, point2):
 
 		direction_point = 0
 		angle = self.wm.angle_between_points(point1, point2)
@@ -218,7 +240,12 @@ class MidfieldAgent (Agent):
 		    direction_point = self.wm.abs_body_dir - angle
 
 		return direction_point
+		 #end of relative direction method
 
+	"""@calcAngleToCoords
+		gets the relative angle using the absolute angle and 
+		the direction of our current direction
+	"""
 	def calcAngleToCoords(self, curAngle, curPosition, targPosition):
 	   	retVal = False
 
@@ -234,7 +261,7 @@ class MidfieldAgent (Agent):
 		retVal = turnArc
 
 	        return(retVal)
-
+		 #end of calc angle to coords method
 
 	"""@receive_pass
 		Determine if the player should move into position to accept a pass

@@ -19,6 +19,9 @@ TEAM_NAME = 'DummyTeam'
 # Number of Soccer Agents
 PLAYER_COUNT = 11
 
+"""@spawn_agent
+Used to run an agent in a seperate physical process.
+"""
 def spawn_agent(team_name):
     """
     Used to run an agent in a seperate physical process.
